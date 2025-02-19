@@ -99,7 +99,29 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              SizedBox(height: 20),
+              SizedBox(height: 5),
+
+              // Forget Password
+              Container(
+                padding: EdgeInsets.only(right: 30, left: 30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.check_box_outline_blank,
+
+                        ),
+                        Text('Show Password'),
+                      ],
+                    ),
+                    Text('Forget Password?', style: TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: 10),
 
               // ✅ Sign In Button
               Padding(
@@ -123,16 +145,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
 
               SizedBox(height: 5),
-
-              // Forget Password
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Forget Password?', style: TextStyle(fontWeight: FontWeight.bold)),
-                ],
-              ),
-
-              SizedBox(height: 10),
 
               // Register Now
               Row(

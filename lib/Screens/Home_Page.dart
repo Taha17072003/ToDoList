@@ -13,6 +13,8 @@ void main() {
 
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -153,31 +155,27 @@ class _HomePageState extends State<HomePage> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                child: Text(
-                    'ToDoList',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                    )
-                ),
+              Text(
+                  'ToDoList',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  )
               ),
-              Container(
-                 child:ElevatedButton(
-                   style: ElevatedButton.styleFrom(
-                   ),
-                     onPressed: () {
-                       Navigator.pushReplacement(
-                         context,
-                         MaterialPageRoute(builder: (context) => LoginPage()),
-                       );
-                     },
-                     child: Icon(
-                      Icons.logout,
-                      color: tdBlue,
-                      size: 30,
-                 )
-                 )
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                ),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  },
+                  child: Icon(
+                   Icons.logout,
+                   color: tdBlue,
+                   size: 30,
+              )
               )
 
             ]
