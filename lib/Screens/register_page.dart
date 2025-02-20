@@ -1,29 +1,30 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   final Function()? onTap;
-  const LoginPage({super.key, required this.onTap});
+  const RegisterPage({super.key, required this.onTap});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPage();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPage extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   String? _emailError;
   String? _passwordError;
 
-  void signUserIn() async{
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text,
-          password: _passwordController.text,
+  void signUserUp() async{
+    if(_confirmPasswordController.text == _passwordController.text){
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
       );
-    } on FirebaseAuthException catch (e) {
-      showErrorMessage(e.code);
+    }else{
+      showErrorMessage('Passwords Do not Match');
     }
   }
 
@@ -46,13 +47,13 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // Function to validate email format
+  // ✅ Function to validate email format
   bool isValidEmail(String email) {
     final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
     return emailRegex.hasMatch(email);
   }
 
-  // Function to validate user input
+  // ✅ Function to validate user input
   void validateAndLogin() {
     setState(() {
       _emailError = null;
@@ -64,16 +65,12 @@ class _LoginPageState extends State<LoginPage> {
 
       if (_passwordController.text.isEmpty) {
         _passwordError = "Password cannot be empty!";
-      }else{
-        if(_passwordController.text.length < 6){
-          _passwordError = "Password must be at least 6 characters!";
-        }
       }
     });
 
-    // Proceed only if there are no errors
+    // ✅ Proceed only if there are no errors
     if (_emailError == null && _passwordError == null) {
-      signUserIn();
+      signUserUp();
     }
   }
 
@@ -94,12 +91,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'Welcome to ToDoList App!',
+                  'Lets Create an Account!',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                 ),
                 SizedBox(height: 30),
-            
-                // Email Text Field
+
+                // ✅ Email Text Field
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: TextField(
@@ -113,15 +110,15 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-            
+
                 SizedBox(height: 10),
-            
-                // Password Text Field
+
+                // ✅ Password Text Field
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: TextField(
                     controller: _passwordController,
-                    obscureText: true,
+                    obscureText: false,
                     decoration: InputDecoration(
                       hintText: 'Password',
                       errorText: _passwordError,
@@ -131,32 +128,28 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-            
-                SizedBox(height: 5),
-            
-                // Forget Password
-                Container(
-                  padding: EdgeInsets.only(right: 30, left: 30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.check_box_outline_blank,
-            
-                          ),
-                          Text('Show Password'),
-                        ],
-                      ),
-                      Text('Forget Password?', style: TextStyle(fontWeight: FontWeight.bold)),
-                    ],
+
+                SizedBox(height: 10),
+
+                // Confirm Password Text Field
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: TextField(
+                    controller: _confirmPasswordController,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      hintText: 'Confirm Password',
+                      errorText: _passwordError,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                    ),
                   ),
                 ),
-            
+
                 SizedBox(height: 10),
-            
-                // Sign In Button
+
+                // ✅ Sign In Button
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: GestureDetector(
@@ -169,16 +162,16 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       child: Center(
                         child: Text(
-                          'Sign In',
+                          'Sign Up',
                           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                       ),
                     ),
                   ),
                 ),
-            
+
                 SizedBox(height: 5),
-            
+
                 // Register Now
                 register(),
               ],
@@ -193,11 +186,11 @@ class _LoginPageState extends State<LoginPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Not a member?', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('Already have an account?', style: TextStyle(fontWeight: FontWeight.bold)),
         GestureDetector(
-          onTap: widget.onTap,
+            onTap: widget.onTap,
             child: Text(
-                ' Register Now',
+                ' Login Now',
                 style: TextStyle(
                     color: Colors.blue,
                     fontWeight: FontWeight.bold)
